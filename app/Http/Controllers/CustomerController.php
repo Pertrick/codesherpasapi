@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\CustomerResource;
 
 class CustomerController extends Controller
 {
@@ -15,13 +16,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::all('name', 'surname', 'birthday', 'email');
-        if($customers){
-            return response()->json([
-                'status' => true,
-                'customer' => $customers
-            ], 201);
-        }
+       return CustomerResource::collection(Customer::paginate(20));
     }
     /**
      * Create and Store a newly created resource in storage.
@@ -34,7 +29,7 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
             'surname' => 'required|string',
-            'email' => 'required|string|email|max:100|unique:users',
+            'email' => 'required|string|email|max:100|unique:customers',
             'birthday' => 'required',
         ]);
 
@@ -47,11 +42,7 @@ class CustomerController extends Controller
 
         $customer = Customer::create($validator->validated());
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Customer successfully created',
-            'user' => $customer
-        ], 201);
+        return new CustomerResource($customer);
     }
 
     /**
@@ -63,10 +54,7 @@ class CustomerController extends Controller
     public function show(Customer $customer)
     {
         if($customer){
-            return response()->json([
-                'status' => true,
-                'customer' => $customer->all('name', 'surname', 'birthday', 'email'),
-            ], 201);
+            return new CustomerResource($customer);
         }
     }
 
@@ -83,10 +71,7 @@ class CustomerController extends Controller
     {
         $customer->update($request->all());
 
-        return response([
-            'status' => true,
-            'customer' => $customer->all('name', 'surname', 'birthday', 'email'),
-         ], 201);
+        return new CustomerResource($customer);
 
         
     }
@@ -100,9 +85,6 @@ class CustomerController extends Controller
     public function destroy(Customer $customer)
     {
         $customer->delete();
-        return response([
-            'status' => true,
-            'message' => 'Deleted'
-        ],201);
+        return response()->json(null, 204);
     }
 }

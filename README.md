@@ -10,7 +10,7 @@ The REST API  have the following capabilities:
 - Can update all the attributes (at once) of an existing customer mentioned above.
 - Can delete an existing customer.
 
-An sqlite database is used to persist/ store data.
+An sqlite database is used to persist/ store data. The database file can be found in "database" folder named "codesherpasapi".
 
 Steps on How to Install Project.
 - Clone project  into your local machine and open the folder in code editor or IDE
@@ -23,7 +23,7 @@ Steps on How to Install Project.
 - Run the command “php artisan serve” to run your project. The project is served on localhost:8000
 
  How to run project Test
- - The test files can be found in "tests/Feature" folder named "CustomerTest.php".
+ - The test file can be found in "tests/Feature" folder named "CustomerTest.php".
  - A unit Test is witten for each CRUD operation.  To run the test open your terminal, navigate to the project directory and run the command ".\vendor\bin\phpunit.bat".
 
 

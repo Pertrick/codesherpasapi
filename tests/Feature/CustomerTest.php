@@ -27,46 +27,45 @@ class CustomerTest extends TestCase
 
         $this->withExceptionHandling();
         $response =$this->post(route('store.customer'), $customer);
-        
         $response->assertStatus(201);
-        $response->assertJson(['status' => true]);
-        $response->assertJson(['message' => "Customer successfully created"]);
+        $response->assertCreated();
     }
 
     public function test_show_all_customer()
     {
         $customer = Customer::factory(3)->create();
         $this->withExceptionHandling();
-        $response =$this->get(route('all.customers'));
-        
-        $response->assertStatus(201);
-        $response->assertJson(['status' => true]);
+        $response =$this->getJson(route('all.customers'));
+        $response->assertStatus(200);
+       
     }
 
     public function test_show_single_customer()
     {
         $customer = Customer::factory(1)->create();
-
         $this->withExceptionHandling();
         $response =$this->get(route('single.customer', $customer[0]['id']));
 
-        $response->assertStatus(201);
-        $response->assertJson(['status' => true]);
+        $response->assertStatus(200);
+        
     }
 
     public function test_update_single_customer()
     {
         $customer = Customer::factory(1)->create();
         $this->withExceptionHandling();
-        $response =$this->put(route('update.customer',$customer[0]['id'],[
-            'name' => 'Test Name',
-            'surname' => "Test Surname",
-            'email' => time().'@example.com',
-            'birthday' => "2000-12-34",
-        ]));
 
-        $response->assertStatus(201);
-        $response->assertJson(['status' => true]);
+        $newCustomer = Customer::factory(1)->create();
+
+        $response =$this->putJson(route('update.customer',$customer[0]['id']), [
+            'name' => 'Test Name',
+            'surname' => 'Test Surname',
+            'email' => time().'@example.com',
+            'birthday' => now(),
+        ]);
+        
+        $response->assertStatus(200);
+       
     }
 
     public function test_delete_single_customer()
@@ -74,9 +73,8 @@ class CustomerTest extends TestCase
         $customer = Customer::factory(1)->create();
         $this->withExceptionHandling();
         $response =$this->delete(route('delete.customer',$customer[0]['id']));
-
-        $response->assertStatus(201);
-        $response->assertJson(['status' => true]);
+        $response->assertStatus(204);
+        
     }
     
 }
