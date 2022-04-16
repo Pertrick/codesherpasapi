@@ -27,4 +27,11 @@ Steps on How to Install Project.
  - A unit Test is witten for each CRUD operation.  To run the test open your terminal, navigate to the project directory and run the command ".\vendor\bin\phpunit.bat".
 
 
+HTTP ENDPOINTS.
+- GET     api/v1/customers          show list of customers
+- POST    api/v1/customer           create a new customer
+- GET     api/v1/customer/1         show details of customer, id = 1
+- PUT     api/v1/customer/1         update details of customer, id =1  
+- DELETE  api/v1/customer/1         delete a customer of id = 1
+
 
